@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tus Multi-File Uploader Component</title>
+    <script src="dist/multi-file-upload-component.min.js" defer></script>
+    <style>
+        /* Global styles for the page layout */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        h1 {
+            background-color: #f8f9fa;
+            padding: 15px 0;
+            text-align: center;
+            margin: 0 0 15px 0;
+            /* Add some margin below */
+            color: #343a40;
+            font-size: 1.4em;
+            border-bottom: 1px solid #dee2e6;
+            box-sizing: border-box;
+            /* Removed fixed positioning - let the component handle its layout */
+        }
+
+        main {
+            padding: 0 15px 15px 15px;
+            /* Add padding around the component */
+        }
+
+        multi-file-upload {
+            margin: 20px;
+            border: 1px solid red;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>File Uploader (Web Component)</h1>
+
+    <main>
+        <multi-file-upload
+        endpoint="/files"
+        max-concurrent-uploads="4"
+        group-id="box-right-example-files" ></multi-file-upload>
+    
+        <multi-file-upload endpoint="/files" group-id="box-bottom-example-files" progress-position="bottom"></multi-file-upload>
+        
+        <multi-file-upload endpoint="/files" group-id="box-left-example-files" progress-position="left"></multi-file-upload>
+    </main>
+
+    
+    <script>
+        const uploader = document.querySelector('multi-file-upload');
+    
+        // Example: Listen for completion
+        uploader.addEventListener('all-uploads-complete', () => {
+            console.log('--- All uploads handled by the component are now finished! ---');
+        });
+    
+        // Example: Listen for individual success
+        uploader.addEventListener('upload-success', (event) => {
+            console.log('--- File upload succeeded ---:', event.detail);
+            // event.detail contains { fileId, fileInfo: { file, groupId, fileId }, uploadUrl }
+        });
+    
+        // You can dynamically change the group-id attribute before the user uploads
+        // document.querySelector('multi-file-upload').setAttribute('group-id', 'new-project-files-6789');
+    
+        // --- OR Use the programmatic method (overrides the attribute for this call) ---
+        // const myFiles = /* get FileList or Array of Files */;
+        // const specificGroupId = 'invoice-batch-001';
+        // uploader.uploadFiles(myFiles, specificGroupId);
+    
+        // --- Check status ---
+        // if (uploader.isUploading()) {
+        //     console.log('Component is currently processing uploads.');
+        // }
+    </script>
+</body>
+
+</html>
